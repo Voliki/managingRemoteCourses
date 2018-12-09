@@ -1,0 +1,10 @@
+.fiz-form {
+    width: 700px !important;
+}
+
+.fiz-form-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px 0;
+}
