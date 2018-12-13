@@ -1,10 +1,33 @@
-.fiz-form {
+.fiz-form, .ur-form{
     width: 700px !important;
 }
 
-.fiz-form-container {
+.fiz-form-container, .ur-form-container {
     width: 100%;
     display: flex;
     justify-content: center;
     margin: 20px 0 40px 0;
+}
+
+.ur-form-listener {
+    padding: 30px;
+    background: #b4bbc2;
+    border: 1px solid #798087;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 10px 0;
+    background: #c7c7b9;
+    border-radius: 5px;
+    padding: 10px;
 }

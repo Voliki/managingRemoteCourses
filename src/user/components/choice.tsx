@@ -2,16 +2,25 @@ import * as React from 'react';
 import { Button } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import { initialStateType } from '../../store/initialState';
-import { changeField, switchingBetweenForms } from '../action/action';
+import {
+  addNewListener, changeField, changeFieldUr, changeOpenAndCloseFormListener, saveListener,
+  switchingBetweenForms
+} from '../action/action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FizForm } from '../components/fizForm';
+import { UrForm } from './urForm';
+import { ListenerType } from '../../store/urFaceState';
 
 type Props = {
   state: initialStateType;
 
   switchingBetweenForms: (typeForm: string) => (dispatch: any) => void;
   changeField: (field: string, value: any) => (dispatch: any) => void;
+  addNewListener: () => (dispatch: any) => void;
+  changeOpenAndCloseFormListener: (isShow: boolean) => (dispatch: any) => void;
+  changeFieldUr: (field: string, value: any) => (dispatch: any) => void;
+  saveListener: (listener: ListenerType) => (dispatch: any) => void;
 };
 type State = {};
 
@@ -72,14 +81,14 @@ class Choice extends React.Component<Props, State> {
             </div>
             <div style={buttonContainerStyle}>
               <Button
-                primary={this.props.state.user.typeForm === 'fiz'}
+                primary={this.props.state.settings.typeForm === 'fiz'}
                 style={{width: '40%'}}
                 onClick={this._handleFizFace}
               >
                 Физическое лицо
               </Button>
               <Button
-                primary={this.props.state.user.typeForm === 'ur'}
+                primary={this.props.state.settings.typeForm === 'ur'}
                 style={{width: '40%'}}
                 onClick={this._handleUrFace}
               >
@@ -89,7 +98,7 @@ class Choice extends React.Component<Props, State> {
           </div>
         </div>
         {/*<div>*/}
-          {this.props.state.user.typeForm === 'fiz' &&
+          {this.props.state.settings.typeForm === 'fiz' &&
           (
             <FizForm
               formField={this.props.state.fizFace}
@@ -97,6 +106,18 @@ class Choice extends React.Component<Props, State> {
               changeField={this.props.changeField}
             />
           )}
+        {this.props.state.settings.typeForm === 'ur' &&
+        (
+          <UrForm
+            settings={this.props.state.settings}
+            urFace={this.props.state.urFace}
+
+            addNewListener={this.props.addNewListener}
+            changeOpenAndCloseFormListener={this.props.changeOpenAndCloseFormListener}
+            changeFieldUr={this.props.changeFieldUr}
+            saveListener={this.props.saveListener}
+          />
+        )}
         {/*</div>*/}
       </React.Fragment>
     );
@@ -114,6 +135,10 @@ const mapDispatchToProps = (dispatch: any) =>
     {
       switchingBetweenForms,
       changeField,
+      addNewListener,
+      changeOpenAndCloseFormListener,
+      changeFieldUr,
+      saveListener,
     },
     dispatch
   );
