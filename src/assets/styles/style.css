@@ -1,4 +1,8 @@
-.fiz-form, .ur-form{
+#app {
+    height: 100%;
+}
+
+.fiz-form, .ur-form {
     width: 700px !important;
 }
 
@@ -30,4 +34,104 @@ li {
     background: #c7c7b9;
     border-radius: 5px;
     padding: 10px;
+}
+
+.choice-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*max-width: 1200px;*/
+}
+
+.choice-header-container {
+    text-align: center;
+    position: relative;
+    margin-bottom: 5px;
+    background: #0071bb;
+    margin-left: -10px;
+    padding: 5px;
+    color: #fff;
+    width: 100%;
+}
+
+.choice-p {
+    font-size: 18px;
+    position: relative;
+    margin-bottom: -5px;
+}
+
+.choice-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.choice-button-container {
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+}
+
+.login-form-container, .administrator-form-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.administrator-form-container {
+    justify-content: flex-start;
+    height: max-content;
+}
+
+.login-form {
+    border: 1px solid #a9a994;
+    border-radius: 7px;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-field {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.administrator-form-container {
+    padding: 20px;
+}
+
+.reference-card-category {
+    width: 100%!important;
+}
+
+.reference-card-category-container {
+    width: 400px;
+}
+
+.reference-card-category-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reference-card-category-list-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.administrator-course-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 50px;
 }

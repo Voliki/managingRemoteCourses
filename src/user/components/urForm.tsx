@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Form, Button, Modal } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { FieldInput, FieldMaskInput, FieldSelect } from './field';
-import { toast } from 'react-toastify';
 import { UrFormListener } from './urFormListener';
 import { settingsStateType } from '../../store/settingsState';
 import { RecordsByNewUrListener } from './recordsByNewUrListener';
-import { ListenerType, UrFaceStateType } from '../../store/urFaceState';
+import { UrFaceStateType } from '../../store/urFaceState';
 
 type Props = {
   settings: settingsStateType;
@@ -14,10 +13,13 @@ type Props = {
   addNewListener: () => (dispatch: any) => void;
   changeOpenAndCloseFormListener: (isShow: boolean) => (dispatch: any) => void;
   changeFieldUr: (field: string, value: any) => (dispatch: any) => void;
-  saveListener: (listener: ListenerType) => (dispatch: any) => void;
+  saveListener: () => (dispatch: any) => void;
+  deleteListener: (listenerId: string) => (dispatch: any) => void;
+  editProfileListener: (listenerId: string) => (dispatch: any) => void;
+  changeFieldUrListener: (field: string, value: any) => (dispatch: any) => void;
+  cancelAddNewListener: () => (dispatch: any) => void;
 };
-type State = {
-};
+type State = {};
 
 export class UrForm extends React.Component<Props, State> {
   testOptions = () => {
@@ -29,22 +31,10 @@ export class UrForm extends React.Component<Props, State> {
     ];
   };
   onChangeSelect = (e: any, data: any) => {
-    // this.props.changeField(data.name, data.value);
+    this.props.changeFieldUr(data.name, data.value);
   };
   onChangeInput = (e: any) => {
     this.props.changeFieldUr(e.target.name, e.target.value);
-    // this.props.changeField(e.target.name, e.target.value);
-  };
-  onChangeFile = (e: any) => {
-    const sizeFile: number = 500000;
-    if (e.target.files[0].size > sizeFile) {
-      e.target.value = '';
-      toast.error('Изображение превышает допустимый размер 500кб', {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    } else {
-      // this.props.changeField(e.target.name, e.target.files[0]);
-    }
   };
   addListener = () => {
     this.props.addNewListener();
@@ -67,8 +57,7 @@ export class UrForm extends React.Component<Props, State> {
               label="Выберите форму обучения"
               placeholder="Форма обучения"
               name="formStudy"
-              // disabled={!!!this.props.formField.courseCategory}
-              disabled={false}
+              disabled={!!!this.props.urFace.courseCategory}
               options={this.testOptions()}
               onChangeSelect={this.onChangeSelect}
             />
@@ -76,8 +65,7 @@ export class UrForm extends React.Component<Props, State> {
               label="Выберите Курс"
               placeholder="Курс"
               name="course"
-              // disabled={!!!this.props.formField.formStudy}
-              disabled={false}
+              disabled={!!!this.props.urFace.formStudy}
               options={this.testOptions()}
               onChangeSelect={this.onChangeSelect}
             />
@@ -85,7 +73,7 @@ export class UrForm extends React.Component<Props, State> {
               label="Наименование юридического лица"
               name="nameUrFace"
               placeholder="Наименование юридического лица"
-              value={this.onChangeInput}
+              value={this.props.urFace.nameUrFace}
               onChangeInput={this.onChangeInput}
             />
             <FieldMaskInput
@@ -93,31 +81,35 @@ export class UrForm extends React.Component<Props, State> {
               name="TINUr"
               placeholder="999999999999"
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+              value={this.props.urFace.TINUr}
               onChangeInput={this.onChangeInput}
             />
             <FieldInput
               label="Реквизиты юридического лица"
               name="requisites"
               placeholder="Реквизиты"
-              // value={this.props.formField.firstName}
+              value={this.props.urFace.requisites}
               onChangeInput={this.onChangeInput}
             />
             <FieldInput
               label="ФИО представителя юридического лица"
               name="nameRepresentativeLegalEntity"
               placeholder="ФИО представителя"
-              // value={this.props.formField.firstName}
+              value={this.props.urFace.nameRepresentativeLegalEntity}
               onChangeInput={this.onChangeInput}
             />
             <FieldInput
               label="Электронная почта представителя юридического лица"
               name="emailUr"
               placeholder="Электронная почта юридического лица"
-              // value={this.props.formField.firstName}
+              value={this.props.urFace.emailUr}
               onChangeInput={this.onChangeInput}
             />
             <RecordsByNewUrListener
               urFace={this.props.urFace}
+
+              deleteListener={this.props.deleteListener}
+              editProfileListener={this.props.editProfileListener}
             />
             <Button
               primary={true}
@@ -126,33 +118,17 @@ export class UrForm extends React.Component<Props, State> {
               Добавить слушателя
             </Button>
           </Form>
-          {/*<Modal open={this.props.settings.isShowModalFormListener}>*/}
-          {/*<Modal.Header>Введите данные слушателя</Modal.Header>*/}
-          {/*<Modal.Content>*/}
-          {/*<div className="ur-form-listener">*/}
+          {this.props.settings.isShowModalFormListener &&
           <UrFormListener
             settings={this.props.settings}
+            urFace={this.props.urFace}
 
             saveListener={this.props.saveListener}
             changeOpenAndCloseFormListener={this.props.changeOpenAndCloseFormListener}
+            changeFieldUrListener={this.props.changeFieldUrListener}
+            cancelAddNewListener={this.props.cancelAddNewListener}
           />
-          {/*</div>*/}
-          {/*</Modal.Content>*/}
-          {/*<Modal.Actions>*/}
-          {/*<Button*/}
-          {/*positive={true}*/}
-          {/*onClick={this.saveNewListener}*/}
-          {/*>*/}
-          {/*Сохранить слушателя*/}
-          {/*</Button>*/}
-          {/*<Button*/}
-          {/*negative={true}*/}
-          {/*onClick={this.cancelNewListener}*/}
-          {/*>*/}
-          {/*Отменить*/}
-          {/*</Button>*/}
-          {/*</Modal.Actions>*/}
-          {/*</Modal>*/}
+          }
         </div>
       </React.Fragment>
     );

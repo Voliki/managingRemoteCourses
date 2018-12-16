@@ -9,6 +9,7 @@ export function FieldInput(props: any) {
       <Input
         placeholder={props.placeholder}
         name={props.name}
+        value={props.value}
         onChange={props.onChangeInput}
       />
     </Form.Field>
@@ -16,13 +17,14 @@ export function FieldInput(props: any) {
 }
 
 export function FieldFileLoader(props: any) {
+  // console.log('props.value', props.value);
   return (
     <Form.Field>
       <label>{props.label}</label>
       <input
         type="file"
         name={props.name}
-        // value={props.value ? props.value: ''}
+        // value={''}
         onChange={props.onChangeFile}
         multiple={false}
         accept="image/*"
@@ -39,6 +41,7 @@ export function FieldMaskInput(props: any) {
         placeholder={props.placeholder}
         name={props.name}
         mask={props.mask}
+        value={props.value}
         onChange={props.onChangeInput}
       />
     </Form.Field>

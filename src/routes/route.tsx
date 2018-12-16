@@ -3,13 +3,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, Switch } from 'react-router';
+import { ToastContainer } from 'react-toastify';
 
 import { initialStateType } from '../store/initialState';
-// import { changeField } from '../user/action/action';
-import { baseUrl } from '../constants/routeUrls';
-// import FizForm from '../user/components/fizForm';
+import { administratorUrl, baseUrl, loginFormUrl } from '../constants/routeUrls';
 import Choice from '../user/components/choice';
-import { ToastContainer } from 'react-toastify';
+import { LoginForm } from '../administrator/components/loginForm';
+import Administrator from '../administrator/components/administrator';
 
 type Props = {};
 type State = {};
@@ -21,6 +21,8 @@ class Routes extends React.Component<Props, State> {
         <ToastContainer/>
         <Switch>
           <Route exact={true} path={baseUrl} component={Choice}/>
+          <Route exact={true} path={loginFormUrl} component={LoginForm}/>
+          <Route exact={true} path={administratorUrl} component={Administrator}/>
           {/*<Route exact={true} path={fizFaceFormUrl} component={FizForm}/>*/}
         </Switch>
       </React.Fragment>
@@ -29,14 +31,12 @@ class Routes extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: initialStateType) => {
-  return {
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
-    {
-    },
+    {},
     dispatch
   );
 

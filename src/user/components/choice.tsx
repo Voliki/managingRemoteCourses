@@ -1,16 +1,19 @@
 import * as React from 'react';
 import { Button } from 'semantic-ui-react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { initialStateType } from '../../store/initialState';
 import {
-  addNewListener, changeField, changeFieldUr, changeOpenAndCloseFormListener, saveListener,
+  addNewListener, cancelAddNewListener, changeField, changeFieldUr, changeFieldUrListener,
+  changeOpenAndCloseFormListener, deleteListener,
+  editProfileListener,
+  saveListener,
   switchingBetweenForms
 } from '../action/action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FizForm } from '../components/fizForm';
 import { UrForm } from './urForm';
-import { ListenerType } from '../../store/urFaceState';
+import { loginFormUrl } from '../../constants/routeUrls';
 
 type Props = {
   state: initialStateType;
@@ -20,44 +23,13 @@ type Props = {
   addNewListener: () => (dispatch: any) => void;
   changeOpenAndCloseFormListener: (isShow: boolean) => (dispatch: any) => void;
   changeFieldUr: (field: string, value: any) => (dispatch: any) => void;
-  saveListener: (listener: ListenerType) => (dispatch: any) => void;
+  saveListener: () => (dispatch: any) => void;
+  deleteListener: (listenerId: string) => (dispatch: any) => void;
+  editProfileListener: (listenerId: string) => (dispatch: any) => void;
+  changeFieldUrListener: (field: string, value: any) => (dispatch: any) => void;
+  cancelAddNewListener: () => (dispatch: any) => void;
 };
 type State = {};
-
-const containerStyle: any = {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  // maxWidth: '1200px',
-};
-const headerStyle: any = {
-  textAlign: 'center',
-  position: 'relative',
-  marginBottom: '5px',
-  background: '#0071bb',
-  marginLeft: '-10px',
-  padding: '5px',
-  color: '#fff',
-  width: '100%',
-};
-const pStyle: any = {
-  fontSize: '18px',
-  position: 'relative',
-  marginBottom: '-5px',
-};
-
-const imageContainerStyle: any = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-const buttonContainerStyle: any = {
-  display: 'flex',
-  justifyContent: 'center',
-  width: '1000px',
-};
 
 class Choice extends React.Component<Props, State> {
   _handleFizFace = () => {
@@ -70,16 +42,19 @@ class Choice extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        <div style={containerStyle}>
+        <div className="choice-container">
           <div style={{maxWidth: '1200px'}}>
-            <div style={headerStyle}>
-              <p style={pStyle}>Заявка на обучение!</p>
+            <div className="choice-header-container">
+              <p className="choice-p">Заявка на обучение!</p>
               заполните анкету слушателя
             </div>
-            <div style={imageContainerStyle}>
+            <div>
+              <Link to={loginFormUrl}>Администрирование</Link>
+            </div>
+            <div className="choice-image-container">
               <img src="/assets/images/up.png"/>
             </div>
-            <div style={buttonContainerStyle}>
+            <div className="choice-button-container">
               <Button
                 primary={this.props.state.settings.typeForm === 'fiz'}
                 style={{width: '40%'}}
@@ -98,14 +73,14 @@ class Choice extends React.Component<Props, State> {
           </div>
         </div>
         {/*<div>*/}
-          {this.props.state.settings.typeForm === 'fiz' &&
-          (
-            <FizForm
-              formField={this.props.state.fizFace}
+        {this.props.state.settings.typeForm === 'fiz' &&
+        (
+          <FizForm
+            formField={this.props.state.fizFace}
 
-              changeField={this.props.changeField}
-            />
-          )}
+            changeField={this.props.changeField}
+          />
+        )}
         {this.props.state.settings.typeForm === 'ur' &&
         (
           <UrForm
@@ -116,6 +91,10 @@ class Choice extends React.Component<Props, State> {
             changeOpenAndCloseFormListener={this.props.changeOpenAndCloseFormListener}
             changeFieldUr={this.props.changeFieldUr}
             saveListener={this.props.saveListener}
+            deleteListener={this.props.deleteListener}
+            editProfileListener={this.props.editProfileListener}
+            changeFieldUrListener={this.props.changeFieldUrListener}
+            cancelAddNewListener={this.props.cancelAddNewListener}
           />
         )}
         {/*</div>*/}
@@ -139,6 +118,10 @@ const mapDispatchToProps = (dispatch: any) =>
       changeOpenAndCloseFormListener,
       changeFieldUr,
       saveListener,
+      deleteListener,
+      editProfileListener,
+      changeFieldUrListener,
+      cancelAddNewListener,
     },
     dispatch
   );

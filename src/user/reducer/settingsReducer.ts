@@ -6,6 +6,9 @@ export default function settingsReducer(state: settingsStateType = settingsState
     ['ADD_NEW_LISTENER']: showModal,
     ['SHOW_FORM_LISTENER']: changeShowModal,
     ['SAVE_LISTENER']: saveListener,
+    ['EDIT_PROFILE_LISTENER']: showModal,
+    ['CANCEL_ADD_NEW_LISTENER']: cancelSaveListener,
+    ['OPEN_AND_CLOSE_MODAL_LISTENER']: showModalListener,
   };
 
   return reduceObject.hasOwnProperty(action.type) ? reduceObject[action.type](state, action) : state;
@@ -33,6 +36,20 @@ function changeShowModal(state: settingsStateType, action: any): settingsStateTy
 }
 
 function saveListener(state: settingsStateType, action: any): settingsStateType {
+  return {
+    ...state,
+    isShowModalFormListener: false,
+  };
+}
+
+function showModalListener(state: settingsStateType, action: any): settingsStateType {
+  return {
+    ...state,
+    isShowModalFormListener: action.isShow,
+  };
+}
+
+function cancelSaveListener(state: settingsStateType, action: any): settingsStateType {
   return {
     ...state,
     isShowModalFormListener: false,

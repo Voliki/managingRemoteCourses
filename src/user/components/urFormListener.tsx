@@ -4,42 +4,23 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { FieldFileLoader, FieldInput, FieldMaskInput, FieldSelect } from './field';
 import { toast } from 'react-toastify';
-import { ListenerType } from '../../store/urFaceState';
+import { defaultUrListener, ListenerType, UrFaceStateType } from '../../store/urFaceState';
 import { settingsStateType } from '../../store/settingsState';
 
 type Props = {
   settings: settingsStateType;
+  urFace: UrFaceStateType;
 
-  saveListener: (listener: ListenerType) => (dispatch: any) => void;
+  saveListener: () => (dispatch: any) => void;
   changeOpenAndCloseFormListener: (isShow: boolean) => (dispatch: any) => void;
+  changeFieldUrListener: (field: string, value: any) => (dispatch: any) => void;
+  cancelAddNewListener: () => (dispatch: any) => void;
 };
-type State = {
-  listener: ListenerType;
-};
+type State = {};
 
 export class UrFormListener extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      listener: {
-        id: uuidV4(),
-        firstName: '',
-        name: '',
-        patronymic: '',
-        email: '',
-        education: '',
-        educationDocument: '',
-        identificationDocument: '',
-        documentChangingName: '',
-        otherDocumentListener: '',
-        position: '',
-        SNILS: '',
-        TINListener: '',
-        postcodeMFListener: '',
-        addressMFListener: '',
-        contactPhoneListener: '',
-      },
-    };
   }
 
   testOptions = () => {
@@ -51,27 +32,16 @@ export class UrFormListener extends React.Component<Props, State> {
     ];
   };
   onChangeSelect = (e: any, data: any) => {
-    // this.props.changeField(data.name, data.value);
-    this.setState({
-      listener: {
-        ...this.state.listener,
-        [data.name]: data.value,
-      },
-    });
+    this.props.changeFieldUrListener(data.name, data.value);
   };
   onChangeInput = (e: any) => {
-    this.setState({
-      listener: {
-        ...this.state.listener,
-        [e.target.name]: e.target.value,
-      },
-    });
+    this.props.changeFieldUrListener(e.target.name, e.target.value);
   };
   saveNewListener = () => {
-    this.props.saveListener(this.state.listener);
+    this.props.saveListener();
   };
   cancelNewListener = () => {
-    this.props.changeOpenAndCloseFormListener(false);
+    this.props.cancelAddNewListener();
   };
   onChangeFile = (e: any) => {
     const sizeFile: number = 500000;
@@ -81,12 +51,7 @@ export class UrFormListener extends React.Component<Props, State> {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else {
-      this.setState({
-        listener: {
-          ...this.state.listener,
-          [e.target.name]: e.target.files[0],
-        },
-      });
+      this.props.changeFieldUrListener(e.target.name, e.target.files[0]);
     }
   };
 
@@ -102,25 +67,28 @@ export class UrFormListener extends React.Component<Props, State> {
                   label="Фамилия слушателя"
                   name="firstName"
                   placeholder="Введите фамилию"
-                  // value={this.props.formField.firstName}
+                  value={this.props.urFace.selectListener.firstName}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldInput
                   label="Имя"
                   name="name"
                   placeholder="Введите имя"
+                  value={this.props.urFace.selectListener.name}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldInput
                   label="Отчество"
                   name="patronymic"
                   placeholder="Введите отчество"
+                  value={this.props.urFace.selectListener.patronymic}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldInput
                   label="Адрес электронной почты"
                   name="email"
                   placeholder="Введите адрес электронной почты"
+                  value={this.props.urFace.selectListener.email}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldSelect
@@ -134,7 +102,7 @@ export class UrFormListener extends React.Component<Props, State> {
                 <FieldFileLoader
                   label="Документ об образовании"
                   name="educationDocument"
-                  // value={this.props.formField.educationDocument}
+                  // value={this.props.urFace.selectListener.educationDocument}
                   onChangeFile={this.onChangeFile}
                 />
                 <FieldFileLoader
@@ -159,6 +127,7 @@ export class UrFormListener extends React.Component<Props, State> {
                   label="Должность слушателя"
                   name="position"
                   placeholder="Введите должность"
+                  value={this.props.urFace.selectListener.position}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldMaskInput
@@ -166,6 +135,7 @@ export class UrFormListener extends React.Component<Props, State> {
                   name="SNILS"
                   placeholder="***-***-***-**"
                   mask={[/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+                  value={this.props.urFace.selectListener.SNILS}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldMaskInput
@@ -173,6 +143,7 @@ export class UrFormListener extends React.Component<Props, State> {
                   name="TINListener"
                   placeholder="999999999999"
                   mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+                  value={this.props.urFace.selectListener.TINListener}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldMaskInput
@@ -180,18 +151,21 @@ export class UrFormListener extends React.Component<Props, State> {
                   name="postcodeMFListener"
                   placeholder="999999"
                   mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+                  value={this.props.urFace.selectListener.postcodeMFListener}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldInput
                   label="Адрес МЖ слушателя"
                   name="addressMFListener"
                   placeholder="Введите адрес МЖ слушателя"
+                  value={this.props.urFace.selectListener.addressMFListener}
                   onChangeInput={this.onChangeInput}
                 />
                 <FieldInput
                   label="Контактный телефон слушателя"
                   name="contactPhoneListener"
                   placeholder="Введите контактный телефон слушателя"
+                  value={this.props.urFace.selectListener.contactPhoneListener}
                   onChangeInput={this.onChangeInput}
                 />
               </Form>

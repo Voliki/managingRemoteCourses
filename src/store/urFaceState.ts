@@ -1,3 +1,22 @@
+export const defaultUrListener: ListenerType = {
+  id: '',
+  firstName: '',
+  name: '',
+  patronymic: '',
+  email: '',
+  education: '',
+  educationDocument: '',
+  identificationDocument: '',
+  documentChangingName: '',
+  otherDocumentListener: '',
+  position: '',
+  SNILS: '',
+  TINListener: '',
+  postcodeMFListener: '',
+  addressMFListener: '',
+  contactPhoneListener: '',
+};
+
 export type UrFaceStateType = {
   courseCategory: string;
   formStudy: string;
@@ -8,6 +27,7 @@ export type UrFaceStateType = {
   nameRepresentativeLegalEntity: string;
   emailUr: string;
   listener: Array<ListenerType>;
+  selectListener: ListenerType;
 };
 
 export type ListenerType = {
@@ -39,4 +59,7 @@ export const urFaceState: UrFaceStateType = {
   nameRepresentativeLegalEntity: '',
   emailUr: '',
   listener: [],
+  selectListener: {
+    ...defaultUrListener,
+  },
 };
